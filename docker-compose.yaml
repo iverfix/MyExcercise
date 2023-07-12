@@ -8,4 +8,11 @@ services:
       - "4200:4200"
     volumes:
       - ./exerciseFrontend/src:/frontend/src
+  backend:
+    build:
+      context: ./server
+    ports:
+      - "3030:3030"
+    volumes:
+      - ./server/:/backend/
 
