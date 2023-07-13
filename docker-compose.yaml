@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   frontend:
+    container_name: angularFrontend
     build:
       context: ./exerciseFrontend
     ports:
@@ -9,23 +10,33 @@ services:
     volumes:
       - ./exerciseFrontend/src:/frontend/src
   backend:
+    container_name: nodeBackend
     build:
       context: ./server
+    environment:
+      DATABASE_NAME: exercise
+      DATABASE_HOST: postgresDB
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
     ports:
       - "3030:3030"
     volumes:
       - ./server/:/backend/
-  db:
+    depends_on:
+      - postgresDB
+  postgresDB:
+    container_name: postgresDB
     image: postgres:14.1-alpine
     restart: always
     environment:
+      - POSTGRES_DB=exercise
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
       - '5432:5432'
     volumes:
-      - db:/var/lib/postgresql/data
+      - postgresDB:/var/lib/postgresql/data
 
 volumes:
-  db:
+  postgresDB:
     driver: local
