@@ -36,6 +36,8 @@ services:
       - '5432:5432'
     volumes:
       - postgresDB:/var/lib/postgresql/data
+      - ./server/create_database_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
 
 volumes:
   postgresDB:
